@@ -3,8 +3,9 @@ package org.bunny.skyfire.rest.client;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.time.Instant;
-
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.List;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -21,16 +22,85 @@ import org.bunny.skyfire.resource.DataStorage;
 
 public class RestApiClient {
 	
-	public static void main(String[] args) throws InvalidKeyException {
+	/*
+	 * GET
+	 * /accounts
+	 * /accounts/<account-id>
+	 * /accounts/<account-id>/ledger
+	 * /accounts/<account_id>/holds
+	 * /orders
+	 * /orders/<order-id>
+	 * /fills
+	 * /funding
+	 * /position
+	 * /payment-methods
+	 * /coinbase-accounts
+	 * /reports/:report_id
+	 * /users/self/trailing-volume
+	 * /products
+	 * /products/<product-id>/book
+	 * /products/<product-id>/ticker
+	 * /products/<product-id>/trades
+	 * /products/<product-id>/candles
+	 * /products/<product-id>/stats
+	 * /currencies
+	 * /time
+	 * 
+	 * POST
+	 * /orders
+	 * /funding/repay
+	 * /profiles/margin-transfer
+	 * /position/close
+	 * /deposits/payment-method
+	 * /deposits/coinbase-account
+	 * /withdrawals/payment-method
+	 * /withdrawals/coinbase-account
+	 * /withdrawals/crypto
+	 * /reports
+	 * 
+	 * DELETE
+	 * /orders/<order-id>
+	 * /orders
+	 * 
+	 */
+	
+	
+	
+	
+	public static void main(String[] args) throws InvalidKeyException  {
 		// TODO Auto-generated method stub
 		
+		String basePath = "https://api.gdax.com";
+		String requestPath ="/orders/";
+				
+		List<String> method = new ArrayList<String>();
+		
+		method.add("GET");
+		method.add("POST");
+		method.add("DELETE");
+		
+		String body = "";		
+		
+		MultivaluedMap<String, Object> queryParams = queryParamsHeader(requestPath, method.get(0), body);
+		
+		Client client = ClientBuilder.newClient();
+		
+		WebTarget target = client.target(basePath + requestPath);
+		Builder builder = target.request(MediaType.APPLICATION_JSON);
+		
+		Response response = builder.headers(queryParams).get();
+		
+		System.out.print(response.readEntity(String.class));
+		
+	}
+
+	public static MultivaluedMap<String, Object> queryParamsHeader(String requestPath, String method, String body) throws InvalidKeyException {
+		
+		MultivaluedMap<String, Object> queryParams = new MultivaluedHashMap<String, Object>();
 		RestApiClient res = new RestApiClient();
 		
 		String timeStamp = Instant.now().getEpochSecond() + "";
-		
-		String signature = res.generate("/accounts", "GET", "", timeStamp);
-		
-		MultivaluedMap<String, Object> queryParams = new MultivaluedHashMap<String, Object>();
+		String signature = res.generate(requestPath, method, body , timeStamp);
 		
 	    queryParams.add("accept", "application/json");
 	    queryParams.add("content-type", "application/json");
@@ -39,14 +109,7 @@ public class RestApiClient {
 		queryParams.add("CB-ACCESS-TIMESTAMP", timeStamp);
 		queryParams.add("CB-ACCESS-PASSPHRASE", DataStorage.getPassphrase());
 		
-		Client client = ClientBuilder.newClient();
-		
-		WebTarget target = client.target("https://api.gdax.com/accounts");
-		Builder builder = target.request(MediaType.APPLICATION_JSON);
-		
-		Response response = builder.headers(queryParams).get();
-		
-		System.out.print(response.readEntity(String.class));
+		return queryParams;
 		
 	}	
 	
