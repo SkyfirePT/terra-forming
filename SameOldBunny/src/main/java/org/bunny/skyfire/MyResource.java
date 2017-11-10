@@ -1,4 +1,4 @@
-package org.bunny.skyfire.SameOldBunny;
+package org.bunny.skyfire;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
