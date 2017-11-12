@@ -12,12 +12,14 @@ import javax.crypto.spec.SecretKeySpec;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.client.Invocation.Builder;
 
+import org.bunny.skyfire.model.accounts.Account;
 import org.bunny.skyfire.resource.DataStorage;
 
 public class RestApiClient {
@@ -71,7 +73,7 @@ public class RestApiClient {
 		// TODO Auto-generated method stub
 		
 		String basePath = "https://api.gdax.com";
-		String requestPath ="/orders/";
+		String requestPath ="/accounts/139ed7d5-445f-4440-a366-33b05b3fea43";
 				
 		List<String> method = new ArrayList<String>();
 		
@@ -88,9 +90,11 @@ public class RestApiClient {
 		WebTarget target = client.target(basePath + requestPath);
 		Builder builder = target.request(MediaType.APPLICATION_JSON);
 		
-		Response response = builder.headers(queryParams).get();
-		
-		System.out.print(response.readEntity(String.class));
+		Account response = (Account) builder.headers(queryParams).get(new GenericType(Account.class));
+//		Account acc = response.readEntity(Account.class);
+			
+		System.out.println(response.getCurrency());
+//		System.out.print(response.readEntity(new GenericType<List<Account>>() {}));
 		
 	}
 

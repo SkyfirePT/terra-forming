@@ -1,0 +1,75 @@
+package org.bunny.skyfire.model.accounts;
+
+import java.math.BigDecimal;
+
+import javax.xml.bind.annotation.XmlRootElement;
+@XmlRootElement
+public class Account {
+	
+	private String id;
+	private String currency;
+	private BigDecimal balance;
+	private BigDecimal available;
+	private BigDecimal hold;
+	private String profile_id;
+
+	public Account() {}
+	
+	public Account(String id, String currency, BigDecimal balance, BigDecimal available, BigDecimal hold, String profile_id) {
+	    this.id = id;
+	    this.currency = currency;
+	    this.balance = balance;
+	    this.available = available;
+	    this.hold = hold;
+	    this.profile_id = profile_id;
+	}
+	
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getCurrency() {
+		return currency;
+	}
+
+	public void setCurrency(String currency) {
+		this.currency = currency;
+	}
+
+	public BigDecimal getBalance() {
+		return balance;
+	}
+
+	public void setBalance(BigDecimal balance) {
+		this.balance = balance;
+	}
+
+	public BigDecimal getAvailable() {
+		return available;
+	}
+
+	public void setAvailable(BigDecimal available) {
+		this.available = available;
+	}
+
+	public BigDecimal getHold() {
+		return hold;
+	}
+
+	public void setHold(BigDecimal hold) {
+		this.hold = hold;
+	}
+
+	public String getProfile_id() {
+		return profile_id;
+	}
+
+	public void setProfile_id(String profile_id) {
+		this.profile_id = profile_id;
+	}
+
+}
