@@ -1,5 +1,6 @@
 package org.bunny.skyfire.rest.client;
 
+import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.time.Instant;
@@ -17,7 +18,12 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
+import javax.xml.bind.JAXBException;
 import javax.ws.rs.client.Invocation.Builder;
+
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.bunny.skyfire.model.accounts.Account;
 import org.bunny.skyfire.resource.DataStorage;
@@ -69,12 +75,14 @@ public class RestApiClient {
 	
 	
 	
-	public static void main(String[] args) throws InvalidKeyException  {
+	public static void main(String[] args) throws InvalidKeyException, JAXBException, JsonParseException, JsonMappingException, IOException  {
 		// TODO Auto-generated method stub
 		
 		String basePath = "https://api.gdax.com";
 		String requestPath ="/accounts/139ed7d5-445f-4440-a366-33b05b3fea43";
-				
+		
+		ObjectMapper mapper = new ObjectMapper();
+
 		List<String> method = new ArrayList<String>();
 		
 		method.add("GET");
@@ -89,12 +97,13 @@ public class RestApiClient {
 		
 		WebTarget target = client.target(basePath + requestPath);
 		Builder builder = target.request(MediaType.APPLICATION_JSON);
+		Response response = builder.headers(queryParams).get();
 		
-		Account response = (Account) builder.headers(queryParams).get(new GenericType(Account.class));
-//		Account acc = response.readEntity(Account.class);
-			
-		System.out.println(response.getCurrency());
-//		System.out.print(response.readEntity(new GenericType<List<Account>>() {}));
+		Account acc = mapper.readValue(response.readEntity(String.class), Account.class);
+		
+		System.out.println(acc.getId());
+		System.out.println(acc.getCurrency());
+		System.out.println(acc.getProfile_id());
 		
 	}
 
