@@ -1,32 +1,18 @@
 package org.bunny.skyfire.rest.client;
 
 import java.io.IOException;
+
 import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.GenericType;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.MultivaluedHashMap;
-import javax.ws.rs.core.MultivaluedMap;
-import javax.ws.rs.core.Response;
 import javax.xml.bind.JAXBException;
-import javax.ws.rs.client.Invocation.Builder;
-
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.bunny.skyfire.model.accounts.Account;
+import org.bunny.skyfire.model.accounts.AccountService;
 import org.bunny.skyfire.resource.DataStorage;
+import org.bunny.skyfire.resource.Utils;
+
+import com.sun.research.ws.wadl.HTTPMethods;
 
 public class RestApiClient {
 	
@@ -72,78 +58,41 @@ public class RestApiClient {
 	 * 
 	 */
 	
-	
-	
-	
-	public static void main(String[] args) throws InvalidKeyException, JAXBException, JsonParseException, JsonMappingException, IOException  {
+	public static void main(String[] args) throws InvalidKeyException, JAXBException, IOException  {
 		// TODO Auto-generated method stub
 		
-		String basePath = "https://api.gdax.com";
-		String requestPath ="/accounts/139ed7d5-445f-4440-a366-33b05b3fea43";
+		System.setProperty("http.proxyHost", DataStorage.getProxyHost());
+		System.setProperty("http.proxyPort", DataStorage.getProxyPort());
 		
-		ObjectMapper mapper = new ObjectMapper();
-
-		List<String> method = new ArrayList<String>();
+		System.setProperty("https.proxyHost", DataStorage.getProxyHost());
+		System.setProperty("https.proxyPort", DataStorage.getProxyPort());
 		
-		method.add("GET");
-		method.add("POST");
-		method.add("DELETE");
+		Utils util = new Utils();
 		
-		String body = "";		
 		
-		MultivaluedMap<String, Object> queryParams = queryParamsHeader(requestPath, method.get(0), body);
+		AccountService accServ = new AccountService();
+				
+//		System.out.println(accServ.getAccounts());
+//		
+		List<Account> accS =  accServ.getAccounts();
+//		
+//		for(Account var: accS) {
+//			System.out.println(var.getCurrency());
+//			System.out.println(var.getId());
+//			System.out.println(var.getProfile_id());
+//			
+//		}
 		
-		Client client = ClientBuilder.newClient();
+//		System.out.println(accServ.getAccount(accS.get(0).getId()).getCurrency());
 		
-		WebTarget target = client.target(basePath + requestPath);
-		Builder builder = target.request(MediaType.APPLICATION_JSON);
-		Response response = builder.headers(queryParams).get();
+		System.out.println("0: "+accS.get(0).getCurrency());
+		System.out.println("1: "+accS.get(1).getCurrency());
+		System.out.println("2: "+accS.get(2).getCurrency());
+		System.out.println("3: "+accS.get(3).getCurrency());
 		
-		Account acc = mapper.readValue(response.readEntity(String.class), Account.class);
-		
-		System.out.println(acc.getId());
-		System.out.println(acc.getCurrency());
-		System.out.println(acc.getProfile_id());
+		System.out.println(util.apiCon("/accounts/"+accS.get(1).getId() + "/holds", HTTPMethods.GET.toString(), ""));
+		System.out.println(util.apiCon("/accounts/"+accS.get(1).getId() + "/ledger", HTTPMethods.GET.toString(), ""));
 		
 	}
-
-	public static MultivaluedMap<String, Object> queryParamsHeader(String requestPath, String method, String body) throws InvalidKeyException {
-		
-		MultivaluedMap<String, Object> queryParams = new MultivaluedHashMap<String, Object>();
-		RestApiClient res = new RestApiClient();
-		
-		String timeStamp = Instant.now().getEpochSecond() + "";
-		String signature = res.generate(requestPath, method, body , timeStamp);
-		
-	    queryParams.add("accept", "application/json");
-	    queryParams.add("content-type", "application/json");
-		queryParams.add("CB-ACCESS-KEY", DataStorage.getApikey());
-		queryParams.add("CB-ACCESS-SIGN", signature);
-		queryParams.add("CB-ACCESS-TIMESTAMP", timeStamp);
-		queryParams.add("CB-ACCESS-PASSPHRASE", DataStorage.getPassphrase());
-		
-		return queryParams;
-		
-	}	
 	
-	 public String generate(String requestPath, String method, String body, String timestamp) throws InvalidKeyException {
-		 
-		 Mac sha256 = null;
-		 String prehash = "";
-		 
-		 try{
-			 prehash = timestamp + method.toUpperCase() + requestPath + body;
-			 byte[] secretDecoded = Base64.getDecoder().decode(DataStorage.getApisecret());
-			 SecretKeySpec keyspec = new SecretKeySpec(secretDecoded, "HmacSHA256");
-			 
-			 sha256 = Mac.getInstance("HmacSHA256");
-			 sha256.init(keyspec);
-    
-		 }catch (NoSuchAlgorithmException ex){
-			 ex.printStackTrace();
-		 }
-		 return Base64.getEncoder().encodeToString(sha256.doFinal(prehash.getBytes()));		            
-	        
-	 }
-	 
 }

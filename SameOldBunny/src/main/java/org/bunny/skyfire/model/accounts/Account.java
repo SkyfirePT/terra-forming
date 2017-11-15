@@ -2,8 +2,6 @@ package org.bunny.skyfire.model.accounts;
 
 import java.math.BigDecimal;
 
-import javax.xml.bind.annotation.XmlRootElement;
-@XmlRootElement
 public class Account {
 	
 	private String id;
