@@ -9,9 +9,12 @@ import javax.xml.bind.JAXBException;
 
 import org.bunny.skyfire.model.accounts.Account;
 import org.bunny.skyfire.model.accounts.AccountService;
+import org.bunny.skyfire.model.marketdata.MarketData;
 import org.bunny.skyfire.resource.DataStorage;
 import org.bunny.skyfire.resource.Utils;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.research.ws.wadl.HTTPMethods;
 
 public class RestApiClient {
@@ -69,12 +72,21 @@ public class RestApiClient {
 		
 		Utils util = new Utils();
 		
+ObjectMapper mapper = new ObjectMapper();
 		
-		AccountService accServ = new AccountService();
+		String output = util.apiCon("/products/BTC-EUR/book?level=3", HTTPMethods.GET.toString(), "", false);
+		
+		MarketData mkt = mapper.readValue(output, MarketData.class);
+		
+		
+//		AccountService accServ = new AccountService();
+		
 				
 //		System.out.println(accServ.getAccounts());
 //		
-		List<Account> accS =  accServ.getAccounts();
+//		List<Account> accS =  accServ.getAccounts();
+	
+		
 //		
 //		for(Account var: accS) {
 //			System.out.println(var.getCurrency());
@@ -85,13 +97,19 @@ public class RestApiClient {
 		
 //		System.out.println(accServ.getAccount(accS.get(0).getId()).getCurrency());
 		
-		System.out.println("0: "+accS.get(0).getCurrency());
-		System.out.println("1: "+accS.get(1).getCurrency());
-		System.out.println("2: "+accS.get(2).getCurrency());
-		System.out.println("3: "+accS.get(3).getCurrency());
-		
-		System.out.println(util.apiCon("/accounts/"+accS.get(1).getId() + "/holds", HTTPMethods.GET.toString(), ""));
-		System.out.println(util.apiCon("/accounts/"+accS.get(1).getId() + "/ledger", HTTPMethods.GET.toString(), ""));
+//		System.out.println("0: "+accS.get(0).getCurrency());
+//		System.out.println("1: "+accS.get(1).getCurrency());
+//		System.out.println("2: "+accS.get(2).getCurrency());
+//		System.out.println("3: "+accS.get(3).getCurrency());
+//		
+//		System.out.println(util.apiCon("/accounts/"+accS.get(1).getId() + "/holds", HTTPMethods.GET.toString(), "", true));
+//		System.out.println(util.apiCon("/accounts/"+accS.get(1).getId() + "/ledger", HTTPMethods.GET.toString(), "", true));
+//		System.out.println(util.apiCon("/fills", HTTPMethods.GET.toString(), "", true));
+		System.out.println(util.apiCon("/products/BTC-EUR", HTTPMethods.GET.toString(), "", false));
+		System.out.println(mkt.getBids().get(0).getOrderId());
+		System.out.println(mkt.getBids().get(0).getNum());
+		System.out.println(mkt.getBids().get(0).getPrice());
+		System.out.println(mkt.getBids().get(0).getSize());
 		
 	}
 	

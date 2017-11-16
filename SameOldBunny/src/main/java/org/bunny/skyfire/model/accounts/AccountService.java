@@ -25,7 +25,7 @@ public class AccountService {
 		
 		ObjectMapper mapper = new ObjectMapper();
 
-		String output = util.apiCon(requestPath, HTTPMethods.GET.toString(), body);
+		String output = util.apiCon(requestPath, HTTPMethods.GET.toString(), body, true);
 		
 		List<Account> acc = mapper.readValue(output, new TypeReference<List<Account>>() {});
 		
@@ -40,7 +40,7 @@ public class AccountService {
 		
 		ObjectMapper mapper = new ObjectMapper();
 		
-		String output = util.apiCon(requestPath, HTTPMethods.GET.toString(), body);
+		String output = util.apiCon(requestPath, HTTPMethods.GET.toString(), body, true);
 		Account acc = mapper.readValue(output,Account.class);
 			
 		return acc;

@@ -37,15 +37,20 @@ public class Utils {
 //		
 //	}	
 
-	public  String apiCon(String req, String met, String bod ) throws InvalidKeyException {
+	public  String apiCon(String req, String met, String bod, boolean aut ) throws InvalidKeyException {
 		
-		MultivaluedMap<String, Object> queryParams = queryParamsHeader(req, met, bod);
+		Response response = null;
 		
 		Client client = ClientBuilder.newClient();
 		
 		WebTarget target = client.target(basePath + req);
 		Builder builder = target.request(MediaType.APPLICATION_JSON);
-		Response response = builder.headers(queryParams).get();
+		
+		if(aut == true) {
+			MultivaluedMap<String, Object> queryParams = queryParamsHeader(req, met, bod);
+			response = builder.headers(queryParams).get();
+		}else
+			response = builder.get();
 		
 		return response.readEntity(String.class);
 		
