@@ -21,8 +21,6 @@ public class RestApiClient {
 	
 	/*
 	 * GET
-	 * /accounts
-	 * /accounts/<account-id>
 	 * /accounts/<account-id>/ledger
 	 * /accounts/<account_id>/holds
 	 * /orders
@@ -72,19 +70,19 @@ public class RestApiClient {
 		
 		Utils util = new Utils();
 		
-ObjectMapper mapper = new ObjectMapper();
+		ObjectMapper mapper = new ObjectMapper();
 		
-		String output = util.apiCon("/products/BTC-EUR/book?level=3", HTTPMethods.GET.toString(), "", false);
+//		String output = util.apiCon("/products/BTC-EUR/book?level=3", HTTPMethods.GET.toString(), "", false);
 		
-		MarketData mkt = mapper.readValue(output, MarketData.class);
+//		MarketData mkt = mapper.readValue(output, MarketData.class);
 		
 		
-//		AccountService accServ = new AccountService();
+		AccountService accServ = new AccountService();
 		
 				
 //		System.out.println(accServ.getAccounts());
 //		
-//		List<Account> accS =  accServ.getAccounts();
+		List<Account> accS =  accServ.getAccounts();
 	
 		
 //		
@@ -101,15 +99,23 @@ ObjectMapper mapper = new ObjectMapper();
 //		System.out.println("1: "+accS.get(1).getCurrency());
 //		System.out.println("2: "+accS.get(2).getCurrency());
 //		System.out.println("3: "+accS.get(3).getCurrency());
-//		
+		
 //		System.out.println(util.apiCon("/accounts/"+accS.get(1).getId() + "/holds", HTTPMethods.GET.toString(), "", true));
 //		System.out.println(util.apiCon("/accounts/"+accS.get(1).getId() + "/ledger", HTTPMethods.GET.toString(), "", true));
 //		System.out.println(util.apiCon("/fills", HTTPMethods.GET.toString(), "", true));
-		System.out.println(util.apiCon("/products/BTC-EUR", HTTPMethods.GET.toString(), "", false));
-		System.out.println(mkt.getBids().get(0).getOrderId());
-		System.out.println(mkt.getBids().get(0).getNum());
-		System.out.println(mkt.getBids().get(0).getPrice());
-		System.out.println(mkt.getBids().get(0).getSize());
+//		System.out.println(util.apiCon("/products/BTC-EUR", HTTPMethods.GET.toString(), "", false));
+//		System.out.println(mkt.getBids().get(0).getOrderId());
+//		System.out.println(mkt.getBids().get(0).getNum());
+//		System.out.println(mkt.getBids().get(0).getPrice());
+//		System.out.println(mkt.getBids().get(0).getSize());
+		
+		System.out.println(accServ.getAccountLedger(accS.get(1).getId()).get(0).getDetails().getProduct_id());
+		
+		System.out.println(util.apiCon("/accounts/"+accS.get(1).getId()+"/holds", HTTPMethods.GET.toString(), "", true));
+		
+		
+		
+		
 		
 	}
 	

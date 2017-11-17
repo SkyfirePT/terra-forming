@@ -1,12 +1,19 @@
-package org.bunny.skyfire.model;
+package org.bunny.skyfire.model.accounts;
 
-/**
- * Created by irufus on 2/25/15.
- */
+import java.math.BigDecimal;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
+
 public class Detail {
     private String order_id;
     private Integer trade_id;
     private String product_id;
+    
+    @JsonCreator
+    public Detail() {
+
+    }
 
     public String getOrder_id() {
         return order_id;

@@ -2,18 +2,26 @@ package org.bunny.skyfire.model.accounts;
 
 import java.math.BigDecimal;
 
-import org.bunny.skyfire.model.Detail;
-
 public class AccountHistory {
 	
-	private Integer id;
-    private String created_at;
+	private String created_at;
+	private Integer id;    
     private BigDecimal amount;
     private BigDecimal balance;
     private String type;
-    private Detail detail;
+    private Detail details;
 
     public AccountHistory() {}
+
+	public AccountHistory(String created_at, Integer id, BigDecimal amount, BigDecimal balance, String type,
+			Detail details) {
+		this.id = id;
+		this.created_at = created_at;
+		this.amount = amount;
+		this.balance = balance;
+		this.type = type;
+		this.details = details;
+	}
 
 	public Integer getId() {
 		return id;
@@ -55,12 +63,12 @@ public class AccountHistory {
 		this.type = type;
 	}
 
-	public Detail getDetail() {
-		return detail;
+	public Detail getDetails() {
+		return details;
 	}
 
-	public void setDetail(Detail detail) {
-		this.detail = detail;
+	public void setDetails(Detail details) {
+		this.details = details;
 	}
     
 }
