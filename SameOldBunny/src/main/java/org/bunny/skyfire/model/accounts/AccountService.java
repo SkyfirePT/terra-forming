@@ -46,7 +46,7 @@ public class AccountService {
 		return acc;
 	}
 	
-	
+	//GET account History by account ID
 	public List<AccountHistory> getAccountLedger(String accId) throws InvalidKeyException, JsonParseException, JsonMappingException, IOException {
 		
 		String requestPath ="/accounts/" + accId + "/ledger";
@@ -57,6 +57,19 @@ public class AccountService {
 		List<AccountHistory> accHist = mapper.readValue(output,new TypeReference<List<AccountHistory>>() {});
 			
 		return accHist;
+	}
+	
+	//GET account Holds by account ID
+	public List<AccountHolds> getAccountHolds(String accId) throws InvalidKeyException, JsonParseException, JsonMappingException, IOException{
+		
+		String requestPath ="/accounts/" + accId + "/holds";
+		
+		ObjectMapper mapper = new ObjectMapper();
+		
+		String output = util.apiCon(requestPath, HTTPMethods.GET.toString(), body, true);
+		List<AccountHolds> accHold = mapper.readValue(output,new TypeReference<List<AccountHolds>>() {});
+		
+		return accHold;
 	}
 	
 	

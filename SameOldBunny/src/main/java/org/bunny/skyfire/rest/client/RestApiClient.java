@@ -3,6 +3,7 @@ package org.bunny.skyfire.rest.client;
 import java.io.IOException;
 
 import java.security.InvalidKeyException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.JAXBException;
@@ -10,10 +11,11 @@ import javax.xml.bind.JAXBException;
 import org.bunny.skyfire.model.accounts.Account;
 import org.bunny.skyfire.model.accounts.AccountService;
 import org.bunny.skyfire.model.marketdata.MarketData;
+import org.bunny.skyfire.model.marketdata.MarketService;
+import org.bunny.skyfire.model.orders.OrderService;
 import org.bunny.skyfire.resource.DataStorage;
 import org.bunny.skyfire.resource.Utils;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.research.ws.wadl.HTTPMethods;
 
@@ -21,8 +23,6 @@ public class RestApiClient {
 	
 	/*
 	 * GET
-	 * /accounts/<account-id>/ledger
-	 * /accounts/<account_id>/holds
 	 * /orders
 	 * /orders/<order-id>
 	 * /fills
@@ -70,18 +70,19 @@ public class RestApiClient {
 		
 		Utils util = new Utils();
 		
-		ObjectMapper mapper = new ObjectMapper();
+//		ObjectMapper mapper = new ObjectMapper();
 		
-//		String output = util.apiCon("/products/BTC-EUR/book?level=3", HTTPMethods.GET.toString(), "", false);
+		String output = util.apiCon("/orders", HTTPMethods.GET.toString(), "", true);
 		
 //		MarketData mkt = mapper.readValue(output, MarketData.class);
 		
 		
 		AccountService accServ = new AccountService();
 		
+		MarketService mrkServ = new MarketService();
+		
+		OrderService ordServ = new OrderService();
 				
-//		System.out.println(accServ.getAccounts());
-//		
 		List<Account> accS =  accServ.getAccounts();
 	
 		
@@ -100,18 +101,22 @@ public class RestApiClient {
 //		System.out.println("2: "+accS.get(2).getCurrency());
 //		System.out.println("3: "+accS.get(3).getCurrency());
 		
-//		System.out.println(util.apiCon("/accounts/"+accS.get(1).getId() + "/holds", HTTPMethods.GET.toString(), "", true));
-//		System.out.println(util.apiCon("/accounts/"+accS.get(1).getId() + "/ledger", HTTPMethods.GET.toString(), "", true));
-//		System.out.println(util.apiCon("/fills", HTTPMethods.GET.toString(), "", true));
-//		System.out.println(util.apiCon("/products/BTC-EUR", HTTPMethods.GET.toString(), "", false));
-//		System.out.println(mkt.getBids().get(0).getOrderId());
-//		System.out.println(mkt.getBids().get(0).getNum());
-//		System.out.println(mkt.getBids().get(0).getPrice());
-//		System.out.println(mkt.getBids().get(0).getSize());
+//		System.out.println(util.apiCon("/orders/"+ordServ.getOrders().get(0).getId(), HTTPMethods.GET.toString(), "", true));
 		
-		System.out.println(accServ.getAccountLedger(accS.get(1).getId()).get(0).getDetails().getProduct_id());
+		List<String>asdasd = new ArrayList<String>();
 		
-		System.out.println(util.apiCon("/accounts/"+accS.get(1).getId()+"/holds", HTTPMethods.GET.toString(), "", true));
+		asdasd.add("done");
+		asdasd.add("pending");
+		
+		ordServ.getOrders(asdasd, "");
+		
+		System.out.println(mrkServ.getProductMarketData(accServ.getAccountLedger(accS.get(1).getId()).get(0).getDetails().getProduct_id(), 2).getBids().get(0).getPrice());		
+		
+		System.out.println(accServ.getAccount(accServ.getAccounts().get(1).getId()).getHold());
+		
+//		System.out.println(accServ.getAccountLedger(accS.get(1).getId()).get(0).getDetails().getProduct_id());
+		
+//		System.out.println(util.apiCon("/accounts/"+accS.get(1).getId()+"/holds", HTTPMethods.GET.toString(), "", true));
 		
 		
 		

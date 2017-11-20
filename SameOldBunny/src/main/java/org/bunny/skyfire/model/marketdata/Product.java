@@ -1,4 +1,4 @@
-package org.bunny.skyfire.model.products;
+package org.bunny.skyfire.model.marketdata;
 
 public class Product {
 	
