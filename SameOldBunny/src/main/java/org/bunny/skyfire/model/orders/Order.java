@@ -20,9 +20,14 @@ public class Order {
 	private String status;
 	private boolean settled;
 	
+	private String done_at;
+	private String done_reason;
+	private double funds;
+	private double specified_funds;
+	
 	public Order() {}
 
-    public Order(String id, String price, String size, String product_id, String side, String stp, String type, String time_in_force, String post_only, Date created_at, String fill_fees, String filled_size, String executed_value, String status, Boolean settled) {
+    public Order(String id, String price, String size, String product_id, String side, String stp, String type, String time_in_force, String post_only, Date created_at, String fill_fees, String filled_size, String executed_value, String status, Boolean settled, String done_at, double funds, double specified_funds) {
         this.id = id;
         this.price = price;
         this.size = size;
@@ -38,6 +43,10 @@ public class Order {
         this.executed_value = executed_value;
         this.status = status;
         this.setSettled(settled);
+        this.done_at = done_at;
+        this.done_at = done_reason;
+        this.funds = funds;
+        this.specified_funds = specified_funds;
     }
 	
 	public String getId() {
@@ -129,6 +138,38 @@ public class Order {
 	}
 	public void setSettled(boolean settled) {
 		this.settled = settled;
+	}
+
+	public String getDone_at() {
+		return done_at;
+	}
+
+	public void setDone_at(String done_at) {
+		this.done_at = done_at;
+	}
+
+	public String getDone_reason() {
+		return done_reason;
+	}
+
+	public void setDone_reason(String done_reason) {
+		this.done_reason = done_reason;
+	}
+
+	public double getFunds() {
+		return funds;
+	}
+
+	public void setFunds(double funds) {
+		this.funds = funds;
+	}
+
+	public double getSpecified_funds() {
+		return specified_funds;
+	}
+
+	public void setSpecified_funds(double specified_funds) {
+		this.specified_funds = specified_funds;
 	}    
 
 }

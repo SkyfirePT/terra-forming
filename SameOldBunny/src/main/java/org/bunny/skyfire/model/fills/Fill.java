@@ -13,6 +13,28 @@ public class Fill {
     private BigDecimal fee;
     private Boolean settled;
     private String side;
+    private String user_id;
+    
+    public String getUser_id() {
+		return user_id;
+	}
+	public void setUser_id(String user_id) {
+		this.user_id = user_id;
+	}
+	public String getProfile_id() {
+		return profile_id;
+	}
+	public void setProfile_id(String profile_id) {
+		this.profile_id = profile_id;
+	}
+	public double getPrice() {
+		return price;
+	}
+	public void setPrice(double price) {
+		this.price = price;
+	}
+	private String profile_id;
+    private double price;
     
 	public Integer getTrade_id() {
 		return trade_id;

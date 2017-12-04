@@ -10,6 +10,8 @@ import javax.xml.bind.JAXBException;
 
 import org.bunny.skyfire.model.accounts.Account;
 import org.bunny.skyfire.model.accounts.AccountService;
+import org.bunny.skyfire.model.fills.Fill;
+import org.bunny.skyfire.model.fills.FillService;
 import org.bunny.skyfire.model.marketdata.MarketData;
 import org.bunny.skyfire.model.marketdata.MarketService;
 import org.bunny.skyfire.model.orders.OrderService;
@@ -23,25 +25,9 @@ public class RestApiClient {
 	
 	/*
 	 * GET
-	 * /orders
-	 * /orders/<order-id>
-	 * /fills
-	 * /funding
-	 * /position
-	 * /payment-methods
-	 * /coinbase-accounts
-	 * /reports/:report_id
-	 * /users/self/trailing-volume
-	 * /products
-	 * /products/<product-id>/book
-	 * /products/<product-id>/ticker
-	 * /products/<product-id>/trades
-	 * /products/<product-id>/candles
-	 * /products/<product-id>/stats
-	 * /currencies
-	 * /time
 	 * 
 	 * POST
+	 * /reports/:report_id
 	 * /orders
 	 * /funding/repay
 	 * /profiles/margin-transfer
@@ -72,9 +58,9 @@ public class RestApiClient {
 		
 //		ObjectMapper mapper = new ObjectMapper();
 		
-		String output = util.apiCon("/orders", HTTPMethods.GET.toString(), "", true);
+		String output = util.apiCon("/reports", HTTPMethods.GET.toString(), "", true);
 		
-//		MarketData mkt = mapper.readValue(output, MarketData.class);
+//		mapper.readValue(output, Fill.class);
 		
 		
 		AccountService accServ = new AccountService();
@@ -82,6 +68,8 @@ public class RestApiClient {
 		MarketService mrkServ = new MarketService();
 		
 		OrderService ordServ = new OrderService();
+		
+		FillService fillServ = new FillService(); 
 				
 		List<Account> accS =  accServ.getAccounts();
 	
@@ -108,9 +96,11 @@ public class RestApiClient {
 		asdasd.add("done");
 		asdasd.add("pending");
 		
-		ordServ.getOrders(asdasd, "");
+//		ordServ.getOrder("");
+		System.out.println(fillServ.getFills());
 		
-		System.out.println(mrkServ.getProductMarketData(accServ.getAccountLedger(accS.get(1).getId()).get(0).getDetails().getProduct_id(), 2).getBids().get(0).getPrice());		
+		
+		System.out.println(mrkServ.getMarketDataProduct(accServ.getAccountLedger(accS.get(1).getId()).get(0).getDetails().getProduct_id(), 2).getBids().get(0).getPrice());		
 		
 		System.out.println(accServ.getAccount(accServ.getAccounts().get(1).getId()).getHold());
 		

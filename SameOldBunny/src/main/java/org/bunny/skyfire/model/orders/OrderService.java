@@ -51,8 +51,6 @@ public class OrderService {
 			requestPath += "?product_id=" + productId;
 		}		
 		
-		System.out.println(requestPath);
-		
 		String output = util.apiCon(requestPath, HTTPMethods.GET.toString(), body, true);
 		
 		List<Order> orders = mapper.readValue(output, new TypeReference<List<Order>>() {});

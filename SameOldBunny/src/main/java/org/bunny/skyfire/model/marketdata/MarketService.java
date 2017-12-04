@@ -19,7 +19,7 @@ public class MarketService {
 	Utils util = new Utils();
 	
 	//GET products
-	public List<Product> getProducts() throws InvalidKeyException, JsonParseException, JsonMappingException, IOException {
+	public List<Product> getMarketDataProducts() throws InvalidKeyException, JsonParseException, JsonMappingException, IOException {
 		
 		String requestPath ="/products";
 		
@@ -34,7 +34,7 @@ public class MarketService {
 	}
 	
 	//GET marketData by product ID and desired level 1/2/3
-	public MarketData getProductMarketData(String productId, int level) throws InvalidKeyException, JsonParseException, JsonMappingException, IOException {
+	public MarketData getMarketDataProduct(String productId, int level) throws InvalidKeyException, JsonParseException, JsonMappingException, IOException {
 		
 		String requestPath ="/products/" + productId + "/book?level=" + level;
 		
@@ -45,6 +45,36 @@ public class MarketService {
 		MarketData mrkProdMarketData = mapper.readValue(output, MarketData.class);
 		
 		return mrkProdMarketData;
+
+	}
+	
+	//GET Ticker by productID
+	public Ticker getMarketDataTicker(String productId) throws InvalidKeyException, JsonParseException, JsonMappingException, IOException {
+		
+		String requestPath ="/products/" + productId + "/ticker";
+		
+		ObjectMapper mapper = new ObjectMapper();
+
+		String output = util.apiCon(requestPath, HTTPMethods.GET.toString(), body, false);
+		
+		Ticker mrkTicker = mapper.readValue(output, Ticker.class);
+		
+		return mrkTicker;
+
+	}
+	
+	//GET last trades by productID
+	public List<Trade> getMarketDataTrade(String productId) throws InvalidKeyException, JsonParseException, JsonMappingException, IOException {
+		
+		String requestPath ="/products/" + productId + "/trades";
+		
+		ObjectMapper mapper = new ObjectMapper();
+
+		String output = util.apiCon(requestPath, HTTPMethods.GET.toString(), body, false);
+		
+		List<Trade> mrkTrades = mapper.readValue(output, new TypeReference<List<Trade>>() {});
+		
+		return mrkTrades;
 
 	}
 
