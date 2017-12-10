@@ -1,7 +1,8 @@
 package org.bunny.skyfire.rest.client;
 
 import java.io.IOException;
-
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,7 @@ import org.bunny.skyfire.model.marketdata.MarketService;
 import org.bunny.skyfire.model.orders.OrderService;
 import org.bunny.skyfire.resource.DataStorage;
 import org.bunny.skyfire.resource.Utils;
+import org.bunny.skyfire.websocket.client.WebSocketClient;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.research.ws.wadl.HTTPMethods;
@@ -108,7 +110,34 @@ public class RestApiClient {
 		
 //		System.out.println(util.apiCon("/accounts/"+accS.get(1).getId()+"/holds", HTTPMethods.GET.toString(), "", true));
 		
-		
+		try {
+            // open websocket
+            final WebSocketClient clientEndPoint = new WebSocketClient(new URI("wss://ws-feed.gdax.com"));
+
+            // add listener
+            clientEndPoint.addMessageHandler(new WebSocketClient.MessageHandler() {
+                public void handleMessage(String message) {
+                    System.out.println(message);
+                }
+            });
+
+            // send message to websocket
+            clientEndPoint.sendMessage("{\"type\": \"subscribe\",\"product_ids\": [\"BTC-EUR\"],\"channels\": [\"level2\",{\r\n" + 
+            		"            \"name\": \"ticker\",\r\n" + 
+            		"            \"product_ids\": [\r\n" + 
+            		"                \"BTC-EUR\"" + 
+            		 
+            		"            ]\r\n" + 
+            		"        }]}");
+
+            // wait 5 seconds for messages from websocket
+            Thread.sleep(500000);
+
+        } catch (InterruptedException ex) {
+            System.err.println("InterruptedException exception: " + ex.getMessage());
+        } catch (URISyntaxException ex) {
+            System.err.println("URISyntaxException exception: " + ex.getMessage());
+        }
 		
 		
 		
