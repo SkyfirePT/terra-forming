@@ -1,10 +1,11 @@
-package org.bunny.skyfire.model.fills;
+package org.bunny.skyfire.controller.rest;
 
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.util.List;
 
-import org.bunny.skyfire.model.accounts.Account;
+import org.bunny.skyfire.model.rest.fills.Fill;
+//import org.bunny.skyfire.model.accounts.Account;
 import org.bunny.skyfire.resource.Utils;
 
 import com.fasterxml.jackson.core.JsonParseException;
@@ -26,7 +27,7 @@ public class FillService {
 		
 		ObjectMapper mapper = new ObjectMapper();
 
-		String output = util.apiCon(requestPath, HTTPMethods.GET.toString(), body, true);
+		String output = util.apiRestCon(requestPath, HTTPMethods.GET.toString(), body, true);
 		
 		List<Fill> fill = mapper.readValue(output, new TypeReference<List<Fill>>() {});
 		

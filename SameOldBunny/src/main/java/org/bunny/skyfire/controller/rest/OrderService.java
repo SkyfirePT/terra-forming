@@ -1,9 +1,10 @@
-package org.bunny.skyfire.model.orders;
+package org.bunny.skyfire.controller.rest;
 
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.util.List;
 
+import org.bunny.skyfire.model.rest.orders.Order;
 import org.bunny.skyfire.resource.Utils;
 
 import com.fasterxml.jackson.core.JsonParseException;
@@ -26,7 +27,7 @@ public class OrderService {
 	
 	public List<Order> getOrders() throws InvalidKeyException, JsonParseException, JsonMappingException, IOException {
 
-		String output = util.apiCon(requestPath, HTTPMethods.GET.toString(), body, true);
+		String output = util.apiRestCon(requestPath, HTTPMethods.GET.toString(), body, true);
 		
 		List<Order> orders = mapper.readValue(output, new TypeReference<List<Order>>() {});
 		
@@ -51,7 +52,7 @@ public class OrderService {
 			requestPath += "?product_id=" + productId;
 		}		
 		
-		String output = util.apiCon(requestPath, HTTPMethods.GET.toString(), body, true);
+		String output = util.apiRestCon(requestPath, HTTPMethods.GET.toString(), body, true);
 		
 		List<Order> orders = mapper.readValue(output, new TypeReference<List<Order>>() {});
 		
@@ -64,7 +65,7 @@ public class OrderService {
 		
 		requestPath +="/" + orderId;
 
-		String output = util.apiCon(requestPath, HTTPMethods.GET.toString(), body, true);
+		String output = util.apiRestCon(requestPath, HTTPMethods.GET.toString(), body, true);
 		
 		Order order = mapper.readValue(output, Order.class);
 		

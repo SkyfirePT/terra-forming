@@ -1,4 +1,4 @@
-package org.bunny.skyfire.model.orders;
+package org.bunny.skyfire.model.rest.orders;
 
 import java.util.Date;
 

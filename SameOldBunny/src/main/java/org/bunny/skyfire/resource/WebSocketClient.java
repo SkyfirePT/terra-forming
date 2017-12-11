@@ -1,4 +1,4 @@
-package org.bunny.skyfire.websocket.client;
+package org.bunny.skyfire.resource;
 
 import java.net.URI;
 import javax.websocket.ClientEndpoint;

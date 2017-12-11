@@ -1,4 +1,4 @@
-package org.bunny.skyfire.model.fills;
+package org.bunny.skyfire.model.rest.fills;
 
 import java.math.BigDecimal;
 

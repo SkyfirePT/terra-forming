@@ -1,9 +1,12 @@
-package org.bunny.skyfire.model.accounts;
+package org.bunny.skyfire.controller.rest;
 
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.util.List;
 
+import org.bunny.skyfire.model.rest.accounts.Account;
+import org.bunny.skyfire.model.rest.accounts.AccountHistory;
+import org.bunny.skyfire.model.rest.accounts.AccountHolds;
 import org.bunny.skyfire.resource.Utils;
 
 import com.fasterxml.jackson.core.JsonParseException;
@@ -25,7 +28,7 @@ public class AccountService {
 		
 		ObjectMapper mapper = new ObjectMapper();
 
-		String output = util.apiCon(requestPath, HTTPMethods.GET.toString(), body, true);
+		String output = util.apiRestCon(requestPath, HTTPMethods.GET.toString(), body, true);
 		
 		List<Account> acc = mapper.readValue(output, new TypeReference<List<Account>>() {});
 		
@@ -40,7 +43,7 @@ public class AccountService {
 		
 		ObjectMapper mapper = new ObjectMapper();
 		
-		String output = util.apiCon(requestPath, HTTPMethods.GET.toString(), body, true);
+		String output = util.apiRestCon(requestPath, HTTPMethods.GET.toString(), body, true);
 		Account acc = mapper.readValue(output,Account.class);
 			
 		return acc;
@@ -53,7 +56,7 @@ public class AccountService {
 		
 		ObjectMapper mapper = new ObjectMapper();
 		
-		String output = util.apiCon(requestPath, HTTPMethods.GET.toString(), body, true);
+		String output = util.apiRestCon(requestPath, HTTPMethods.GET.toString(), body, true);
 		List<AccountHistory> accHist = mapper.readValue(output,new TypeReference<List<AccountHistory>>() {});
 			
 		return accHist;
@@ -66,7 +69,7 @@ public class AccountService {
 		
 		ObjectMapper mapper = new ObjectMapper();
 		
-		String output = util.apiCon(requestPath, HTTPMethods.GET.toString(), body, true);
+		String output = util.apiRestCon(requestPath, HTTPMethods.GET.toString(), body, true);
 		List<AccountHolds> accHold = mapper.readValue(output,new TypeReference<List<AccountHolds>>() {});
 		
 		return accHold;

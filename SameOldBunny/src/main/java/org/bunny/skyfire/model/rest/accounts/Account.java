@@ -1,4 +1,4 @@
-package org.bunny.skyfire.model.accounts;
+package org.bunny.skyfire.model.rest.accounts;
 
 import java.math.BigDecimal;
 

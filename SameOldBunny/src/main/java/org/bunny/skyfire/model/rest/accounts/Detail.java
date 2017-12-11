@@ -1,7 +1,7 @@
-package org.bunny.skyfire.model.accounts;
+package org.bunny.skyfire.model.rest.accounts;
 
-import java.math.BigDecimal;
-import java.util.List;
+//import java.math.BigDecimal;
+//import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 

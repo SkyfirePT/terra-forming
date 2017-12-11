@@ -1,9 +1,13 @@
-package org.bunny.skyfire.model.marketdata;
+package org.bunny.skyfire.controller.rest;
 
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.util.List;
 
+import org.bunny.skyfire.model.rest.marketdata.MarketData;
+import org.bunny.skyfire.model.rest.marketdata.Product;
+import org.bunny.skyfire.model.rest.marketdata.Ticker;
+import org.bunny.skyfire.model.rest.marketdata.Trade;
 import org.bunny.skyfire.resource.Utils;
 
 import com.fasterxml.jackson.core.JsonParseException;
@@ -25,7 +29,7 @@ public class MarketService {
 		
 		ObjectMapper mapper = new ObjectMapper();
 
-		String output = util.apiCon(requestPath, HTTPMethods.GET.toString(), body, false);
+		String output = util.apiRestCon(requestPath, HTTPMethods.GET.toString(), body, false);
 		
 		List<Product> mrkProducts = mapper.readValue(output, new TypeReference<List<Product>>() {});
 		
@@ -40,7 +44,7 @@ public class MarketService {
 		
 		ObjectMapper mapper = new ObjectMapper();
 
-		String output = util.apiCon(requestPath, HTTPMethods.GET.toString(), body, false);
+		String output = util.apiRestCon(requestPath, HTTPMethods.GET.toString(), body, false);
 		
 		MarketData mrkProdMarketData = mapper.readValue(output, MarketData.class);
 		
@@ -55,7 +59,7 @@ public class MarketService {
 		
 		ObjectMapper mapper = new ObjectMapper();
 
-		String output = util.apiCon(requestPath, HTTPMethods.GET.toString(), body, false);
+		String output = util.apiRestCon(requestPath, HTTPMethods.GET.toString(), body, false);
 		
 		Ticker mrkTicker = mapper.readValue(output, Ticker.class);
 		
@@ -70,7 +74,7 @@ public class MarketService {
 		
 		ObjectMapper mapper = new ObjectMapper();
 
-		String output = util.apiCon(requestPath, HTTPMethods.GET.toString(), body, false);
+		String output = util.apiRestCon(requestPath, HTTPMethods.GET.toString(), body, false);
 		
 		List<Trade> mrkTrades = mapper.readValue(output, new TypeReference<List<Trade>>() {});
 		
