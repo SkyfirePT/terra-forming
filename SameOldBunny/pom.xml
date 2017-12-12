@@ -59,6 +59,16 @@
 			    <artifactId>commons-math3</artifactId>
 			    <version>3.6.1</version>
 			</dependency>
+			<dependency>
+			    <groupId>org.apache.commons</groupId>
+    			<artifactId>commons-lang3</artifactId>
+   				<version>3.7</version>
+			</dependency>
+			<dependency>
+    <groupId>math.geom2d</groupId>
+    <artifactId>javaGeom</artifactId>
+    <version>0.11.1</version>
+</dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -98,6 +108,14 @@
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-math3</artifactId>
 		</dependency>
+		<dependency>
+			 <groupId>org.apache.commons</groupId>
+    			<artifactId>commons-lang3</artifactId>
+		</dependency>
+		<dependency>
+		<groupId>math.geom2d</groupId>
+    <artifactId>javaGeom</artifactId>
+    </dependency>
     </dependencies>
     <properties>
         <jersey.version>2.26</jersey.version>

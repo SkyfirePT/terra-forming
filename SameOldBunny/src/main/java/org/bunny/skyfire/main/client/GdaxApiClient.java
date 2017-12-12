@@ -1,15 +1,22 @@
 package org.bunny.skyfire.main.client;
 
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.geom.Point2D;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.xml.bind.JAXBException;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.bunny.skyfire.controller.rest.AccountService;
 import org.bunny.skyfire.controller.rest.FillService;
 import org.bunny.skyfire.controller.rest.MarketService;
@@ -21,9 +28,11 @@ import org.bunny.skyfire.model.rest.marketdata.MarketData;
 import org.bunny.skyfire.model.websocket.ticker.Ticker;
 import org.bunny.skyfire.resource.DataStorage;
 import org.bunny.skyfire.resource.EMA;
+import org.bunny.skyfire.resource.GraphTest;
+import org.bunny.skyfire.resource.MACD;
 import org.bunny.skyfire.resource.Utils;
 import org.bunny.skyfire.resource.WebSocketClient;
-import org.omg.CORBA.TCKind;
+
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.research.ws.wadl.HTTPMethods;
@@ -61,7 +70,14 @@ public class GdaxApiClient implements Runnable {
 		System.setProperty("https.proxyHost", DataStorage.getProxyHost());
 		System.setProperty("https.proxyPort", DataStorage.getProxyPort());
 		
+	
 		
+		
+		JFrame frame = new JFrame("JavaGeom Demo");
+//		
+		frame.setSize(-20, 20);
+		frame.setVisible(true);
+//		
 		
 //		ObjectMapper mapper = new ObjectMapper();
 		
@@ -118,28 +134,58 @@ public class GdaxApiClient implements Runnable {
 		GdaxApiClient obj = new GdaxApiClient();
 		Thread tobj = new Thread(obj);
 		TickerService tckServ = new TickerService();
-		EMA ema = new EMA(12);
-		double[] aaa = new double[600] ;
-		double[] bbb = new double[600] ; 
+		
+		MACD macd = new MACD(8,12, 26);
+		EMA ema12 = new EMA(12);
+		EMA ema26 = new EMA(26);
+
+		List<Double> test12 = new ArrayList<>();
+		List<Double> test26 = new ArrayList<>();
+		List<Double> prices = new ArrayList<>();
+		
 		tobj.start();		 
 //		ema.count(aaa, offset, emas)
 			
 		System.out.println("1");
 		int b = 0;
+		int y = 0;
 		while(tobj.isAlive()) {
 			int a = tckServ.getTckMessage().size();
 			
 			if(a != b) {
 				b = a;
-				aaa[tckServ.getTckMessage().size() -1] = tckServ.getTckMessage().get(tckServ.getTckMessage().size() -1).getPrice();
-				ema.count(aaa, 2, bbb);
-				System.out.println(tckServ.getTckMessage().size());
-				System.out.println("Last action on market: "+ tckServ.getTckMessage().get(tckServ.getTckMessage().size() -1).getSide()+ " Price: " + tckServ.getTckMessage().get(tckServ.getTckMessage().size() -1).getPrice());
+
 				
-				for (int i = 0; i< bbb.length; i++) {
-					System.out.print(bbb[i]+ ", ");	
+				prices.add(tckServ.getTckMessage().get(tckServ.getTckMessage().size() -1).getPrice());
+				if(test12.isEmpty() || test26.isEmpty()) {
+					test12.add(ema12.single(tckServ.getTckMessage().get(tckServ.getTckMessage().size() -1).getPrice(), 0));
+					test26.add(ema26.single(tckServ.getTckMessage().get(tckServ.getTckMessage().size() -1).getPrice(), 0));
+				}else {
+					test12.add(ema12.single(tckServ.getTckMessage().get(tckServ.getTckMessage().size() -1).getPrice(), test12.get(test12.size()-1)));
+					test26.add(ema26.single(tckServ.getTckMessage().get(tckServ.getTckMessage().size() -1).getPrice(), test26.get(test26.size()-1)));
 				}
+			
+				
+				if(prices.size()>100) {
+					double[][] macdd = macd.count(ArrayUtils.toPrimitive(prices.toArray(new Double[prices.size()])));
+					
+					System.out.println(Arrays.toString(macdd[0]));
+					System.out.println(Arrays.toString(macdd[1]));
+					
+						JPanel panel = new GraphTest(macdd[0]);
+						frame.setContentPane(panel);				
+				
+					
+				}
+				
+				
+			//	System.out.println(tckServ.getTckMessage().size());
+			//	System.out.println("Last action on market: "+ tckServ.getTckMessage().get(tckServ.getTckMessage().size() -1).getSide()+ " Price: " + tckServ.getTckMessage().get(tckServ.getTckMessage().size() -1).getPrice());
+				
+				//System.out.println(test12.toString());
+			//	System.out.println(test26.toString());
 			}
+			
 			
 			
 				
@@ -168,7 +214,7 @@ public class GdaxApiClient implements Runnable {
 	    List<String>asdasd = new ArrayList<String>();
 		List<String>asdasd2 = new ArrayList<String>();
 		asdasd.clear();
-		asdasd.add("BTC-EUR");
+		asdasd.add("BTC-USD");
 //		asdasd.add("BTC-USD");
 		asdasd2.add("ticker");
 //		asdasd2.add("heartbeat");
